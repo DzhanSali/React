@@ -18,8 +18,8 @@ function createFood(data) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-  }).then(checkStatus);
-}
+  }).then(response => { return checkStatus(response); });
+};
 
 function updateFood(data) {
   return fetch("http://localhost:3001/api/foods", {
@@ -53,7 +53,19 @@ function search(query, success) {
     .then(parseJSON)
     .then(success)
     .catch(console.error);
-}
+};
+
+/* function searchById(id, success) {
+  return fetch(`http://localhost:3001/api/foods?id=${id}`, {
+    headers: {
+      Accept: "application/json",
+    },
+  })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(success)
+    .catch(console.error);
+}; */
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -76,7 +88,7 @@ const client = {
   createFood,
   updateFood,
   deleteFood,
-  search
+  search,
 };
 
 export default client;

@@ -71,6 +71,29 @@ app.get("/api/foods", (req, res) => {
     });
   });
 
+/*   app.get("/api/foods", (req, res) => {
+    const query = req.query.query;
+  
+    fs.readFile(DATA_FILE, (err, data) => {
+      if (err) {
+        console.error("Error reading data file:", err);
+        res.status(500).json({ error: "Internal server error" });
+        return;
+      }
+  
+      const foods = JSON.parse(data);
+      let matchedFoods = [];
+
+      if (query) {
+        console.log(`Searching for ${query}...`);
+        matchedFoods = foods.filter(food => food.id === query);
+        res.json(matchedFoods);
+      } else {
+        res.json(matchedFoods);
+      }      
+    });
+  }); */
+
 app.post("/api/foods",  (req, res) => {
     fs.readFile(DATA_FILE, (err, data) => {
         const foods = JSON.parse(data);

@@ -6,5 +6,53 @@
         "fat": 2.7,
         "carb": 4.8,
         "id": 1
+    },
+    {
+        "desc": "Llama",
+        "kcal": 215,
+        "protein": 22.4,
+        "fat": 3.5,
+        "carb": 78.2,
+        "id": "67e29c73-941d-44e7-b7ac-2318a7fa17b1"
+    },
+    {
+        "desc": "Llama",
+        "kcal": 215,
+        "protein": 22.4,
+        "fat": 3.5,
+        "carb": 78.2,
+        "id": "a425a4a7-d2e9-4dda-8b7f-e03824ab4cb8"
+    },
+    {
+        "desc": "Sick Horse",
+        "kcal": 55.1,
+        "protein": 90,
+        "fat": 23.6,
+        "carb": 2.5,
+        "id": "c73d2055-cc62-41b8-8f18-d51b25a23d87"
+    },
+    {
+        "desc": "Dying Horse",
+        "kcal": 31.8,
+        "protein": 60,
+        "fat": 13.1,
+        "carb": 1.9,
+        "id": "756e0cb8-bcb2-4470-b3fa-dd1d39f20dba"
+    },
+    {
+        "desc": "Dead Horse",
+        "kcal": 0,
+        "protein": 0,
+        "fat": 0,
+        "carb": 0,
+        "id": "2d35f157-a22d-4e3c-afc4-663242a198b4"
+    },
+    {
+        "desc": "Pizza",
+        "kcal": 600,
+        "protein": 60,
+        "fat": 30,
+        "carb": 40,
+        "id": "d76f8743-9ac7-43c5-9265-276543408dbe"
     }
 ]

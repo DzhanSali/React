@@ -2,38 +2,48 @@ import './App.css';
 import React, {useState, useEffect} from "react";
 import client from "./client";
 import { v4 as uuidv4 } from 'uuid';
+import {BrowserRouter as Router, Routes, Route, Link, Navigate as Redirect} from "react-router-dom";
+
 
 function App() {
+
   const [selectedFoods, setSelectedFoods] = useState([]);
 
-  const addFoodToSelected = (food) => {
+  const addFood = food => {
     setSelectedFoods(prevSelectedFoods => [...prevSelectedFoods, food]);
   };
 
+  const removeFoodItem = itemIndex => {
+    const filteredFoods = selectedFoods.filter((item, id) => itemIndex !== id);
+    setSelectedFoods(filteredFoods);
+  };
+  
   return (
     <div>
-      <div>
-    <FoodTable selectedFoods={selectedFoods} />
-    </div>
-    <div>
-    <SearchFood addFoodToSelected={addFoodToSelected} />
-    </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={ 
+                          <div className=' centered-container-main'> 
+                          <div>
+                          <FoodTable foods={selectedFoods} onFoodClick={removeFoodItem}/> </div>
+                          <div>
+                             <SearchFood onFoodClick={addFood} />       </div> </div>} 
+         />
+          <Route path="/addFood" element={ <AddFood /> } />
+          <Route path="*" element={ <NotFound /> } />
+        </Routes>
+      </Router>
     </div>
   );
 }
 
 
-function FoodTable ({selectedFoods}) {
-  const [foods, setFoods] = useState([]);
+function FoodTable (props) {
   
-  useEffect(() => {
-    client.getFoods((data) => {
-      setFoods(data); 
-    });
-  }, []); 
+  const { foods } = props;
 
-  const foodRows = foods.map((food, idx) => (
-    <tr key={idx} onClick={() => handleFoodClick(food)}>
+  const foodRows = foods.map((food, id) => (
+    <tr key={id} onClick={() => props.onFoodClick(id)}>
       <td>{food.desc}</td>
       <td className="right aligned">{food.kcal}</td>
       <td className="right aligned">{food.protein}</td>
@@ -41,11 +51,7 @@ function FoodTable ({selectedFoods}) {
       <td className="right aligned">{food.carb}</td>
     </tr>
   ));
-
-  const handleFoodClick = (food) => {
-    //setSelectedFoods(prevSelectedFoods => [...prevSelectedFoods, food]);
-  };
-  
+ 
 
   return (
     <table className="ui selectable structured large table">
@@ -73,13 +79,13 @@ function FoodTable ({selectedFoods}) {
                 {sum(foods, "kcal")}
               </th>
               <th className="right aligned" id="total-protein_g">
-                {sum(foods, "protein_g")}
+                {sum(foods, "protein")}
               </th>
               <th className="right aligned" id="total-fat_g">
-                {sum(foods, "fat_g")}
+                {sum(foods, "fat")}
               </th>
               <th className="right aligned" id="total-carbohydrate_g">
-                {sum(foods, "carbohydrate_g")}
+                {sum(foods, "carb")}
               </th>
             </tr>
           </tfoot>
@@ -88,22 +94,11 @@ function FoodTable ({selectedFoods}) {
 
 };
 
-function SearchFood({addFoodToSelected}) {
+function SearchFood(props) {
   const [foods, setFoods] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  // useEffect hook to fetch foods when the component mounts
-/*   useEffect(() => {
-    client.getFoods((data) => {
-      setFoods(data); // Set the fetched foods to the state
-    });
-  }, []); */
 
   const MATCHING_ITEM_LIMIT = 25;
-
-  const handleFoodClick = (food) => {
-    addFoodToSelected(food);
-    console.log("addFoodSelected");
-  };
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -114,15 +109,14 @@ function SearchFood({addFoodToSelected}) {
     // Once value.length is > 3, a new call to the server will be made only per 3 additional chars (for performance reasons).
     if (value.length >= 3 && (value.length % 3 === 0)) {
       setSearchValue(value);
-
       client.search(value, (foods) => {
-        setFoods(foods.slice(0, MATCHING_ITEM_LIMIT)); // Update the foods state with matching foods
+        setFoods(foods.slice(0, MATCHING_ITEM_LIMIT));
       });
     }
   };
 
-  const foodRows = foods.map((food, idx) => (
-    <tr key={idx} id="dummyid" onClick={() => handleFoodClick(idx)}>
+  const foodRows = foods.map((food, id) => (
+    <tr key={id} onClick={() => props.onFoodClick(food)}>
       <td>{food.desc}</td>
       <td className="right aligned">{food.kcal}</td>
       <td className="right aligned">{food.protein}</td>
@@ -143,8 +137,8 @@ function SearchFood({addFoodToSelected}) {
                     className="prompt"
                     type="text"
                     placeholder="Search foods..."
-                    value={searchValue} 
-                    onChange={handleSearchChange} 
+                    value={searchValue}
+                    onChange={handleSearchChange}
                   />
                   <i className="search icon" />
                 </div>
@@ -159,15 +153,17 @@ function SearchFood({addFoodToSelected}) {
             <th>Carbs (g)</th>
           </tr>
         </thead>
-        <tbody id="dummyid" onClick={() => handleFoodClick()}>{foodRows}</tbody>
+        <tbody >{foodRows}</tbody>
       </table>
+      <div>
+      <Link to="/addFood"> Add New Food </Link>
+      </div>
     </div>
   );
 
-}
+};
 
 function AddFood () {
-  //const navigate = useNavigate();
 
   const [food, setFood] = useState({
     desc: '',
@@ -178,7 +174,9 @@ function AddFood () {
     id: 0
   });
 
-  const onDataInput = (e) => {
+  const [counter, setCounter] = useState(4);
+
+  const onDataInput=(e)=>{
     const name = e.target.name;
     const value = e.target.value;
 
@@ -194,53 +192,78 @@ function AddFood () {
     });
   };
 
-  const onFormSubmit = (e) => {
-    e.preventDefault();
+  const onFormSubmit=(e)=>{
 
-    //setFood({...food, id: uuidv4()})
+    e.preventDefault();
+    let objId = uuidv4();
 
     try {
-      client.createFood({...food, id: uuidv4()})
-      .then(() => {
-        navigate(`/`);
+
+      client.createFood({...food, id: objId})
+      .then(response => {
+        console.log("Client response: ", response);
+        if(response.status >= 200) {
+          alert("Successfully added food!");
+        }
+        else {
+          alert( "Failed to add food! Try again.");
+        }
       })
+      .catch(err => console.log(err));
     } catch (err) {
       console.log(err);
-    }
+    };
   };
 
   // step="0.1" min="0" are validations for numbers entered to be =< 0 and have only one number after decimal point
   return(
-    <form onSubmit={onFormSubmit}>
-      <label for="desc"> Name Of Product:
-        <input type="text" name="desc" value={food.desc} required onChange={onDataInput}></input>
-      </label>
+    <div className=' centered-container'>
+    <form className="ui form" onSubmit={onFormSubmit}>
+    <div className="field">
+      <label htmlFor="desc">Name Of Product</label>
+      <input type="text" name="desc" value={food.desc} required onChange={onDataInput} />
+    </div>
 
-      <label for="kcal"> Kcal (in grams):
-        <input type="number" step="0.1" min="0" name="kcal" value={food.kcal} onChange={onDataInput}></input>
-      </label>
+    <div className="field">
+      <label htmlFor="kcal">Kcal (in grams)</label>
+      <input type="number" step="0.1" min="0" name="kcal" value={food.kcal} onChange={onDataInput} />
+    </div>
 
-      <label for="protein"> Proteins (in grams):
-        <input type="number" step="0.1" min="0" name="protein" value={food.protein} onChange={onDataInput}></input>
-      </label>
+    <div className="field">
+      <label htmlFor="protein">Proteins (in grams)</label>
+      <input type="number" step="0.1" min="0" name="protein" value={food.protein} onChange={onDataInput} />
+    </div>
 
-      <label for="fat"> Fats (in grams):
-        <input type="number" step="0.1" min="0" name="fat" value={food.fat} onChange={onDataInput}></input>
-      </label>
+    <div className="field">
+      <label htmlFor="fat">Fats (in grams)</label>
+      <input type="number" step="0.1" min="0" name="fat" value={food.fat} onChange={onDataInput} />
+    </div>
 
-      <label for="carb"> Carbohydrates (in grams):
-        <input type="number" step="0.1" min="0" name="carb" value={food.carb} onChange={onDataInput}></input>
-      </label>
+    <div className="field">
+      <label htmlFor="carb">Carbohydrates (in grams)</label>
+      <input type="number" step="0.1" min="0" name="carb" value={food.carb} onChange={onDataInput} />
+    </div>
 
-      <button type="submit">Add Food</button>
-    </form>
+    <button className="ui button" type="submit">Add Food</button>
+    <Link to="/" className="ui button">Go back</Link>
+  </form>
+  </div>
+  );
+};
+
+function NotFound() {
+  return (
+    <div>
+    <h1> No such page exists!</h1>
+    <h5> Double-check the URL you entered!</h5>
+    </div>
   );
 };
 
 function sum(foods, prop) {
-  return foods
-    .reduce((memo, food) => parseInt(food[prop], 10) + memo, 0.0)
-    .toFixed(2);
+  return foods.
+          reduce((total, food) => total + parseFloat(food[prop]), 0).toFixed(1);
 };
+
 
 export default App;
