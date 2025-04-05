@@ -1,0 +1,82 @@
+[
+    {
+        "desc": "Chicken Strips",
+        "kcal": 31.1,
+        "protein": 15.3,
+        "fat": 3.1,
+        "carb": 62,
+        "id": 1
+    },
+    {
+        "desc": "Pork",
+        "kcal": 215,
+        "protein": 22.4,
+        "fat": 3.5,
+        "carb": 78.2,
+        "id": "67e29c73-941d-44e7-b7ac-2318a7fa17b1"
+    },
+    {
+        "desc": "Pulled Pork",
+        "kcal": 215,
+        "protein": 22.4,
+        "fat": 3.5,
+        "carb": 78.2,
+        "id": "a425a4a7-d2e9-4dda-8b7f-e03824ab4cb8"
+    },
+    {
+        "desc": "Beef",
+        "kcal": 55.1,
+        "protein": 90,
+        "fat": 23.6,
+        "carb": 2.5,
+        "id": "c73d2055-cc62-41b8-8f18-d51b25a23d87"
+    },
+    {
+        "desc": "Black Angus",
+        "kcal": 31.8,
+        "protein": 60,
+        "fat": 13.1,
+        "carb": 1.9,
+        "id": "756e0cb8-bcb2-4470-b3fa-dd1d39f20dba"
+    },
+    {
+        "desc": "Beefsteak",
+        "kcal": 300,
+        "protein": 50,
+        "fat": 60,
+        "carb": 6,
+        "id": "2d35f157-a22d-4e3c-afc4-663242a198b4"
+    },
+    {
+        "desc": "Pizza",
+        "kcal": 600,
+        "protein": 60,
+        "fat": 30,
+        "carb": 40,
+        "id": "d76f8743-9ac7-43c5-9265-276543408dbe"
+    },
+    {
+        "desc": "Protein Bar",
+        "kcal": 410,
+        "protein": 5.4,
+        "fat": 12,
+        "carb": 72,
+        "id": "e4d64b9a-3f83-45f1-a508-43a2f10c9fdc"
+    },
+    {
+        "desc": "Chocolate",
+        "kcal": 500,
+        "protein": 2,
+        "fat": 100,
+        "carb": 300.5,
+        "id": "f9c1fbb4-6249-4d09-b90f-80b525577b5d"
+    },
+    {
+        "desc": "Grapes",
+        "kcal": 250,
+        "protein": 2,
+        "fat": 0,
+        "carb": 150.5,
+        "id": "95daa6a1-3d70-4b1b-9033-c3b41488b1a9"
+    }
+]
