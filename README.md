@@ -13,4 +13,8 @@ How it works:
   3. Data is read from and written to data.json
 
 
-![React](https://github.com/user-attachments/assets/5fa7c916-8339-456f-84a8-b97c3c3587fa)
+
+
+
+https://github.com/user-attachments/assets/1def18ad-7dca-4476-a20a-f88566881027
+
